@@ -73,4 +73,11 @@ router.route('/cash/pno/:pno')
       }
       res.json(detail.bname);
     });
-  
+  });
+
+
+// Fire up server
+app.listen(port);
+
+// print friendly message to console
+console.log('Server listening on port ' + port);
