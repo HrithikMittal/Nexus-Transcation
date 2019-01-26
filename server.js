@@ -62,7 +62,6 @@ MongoClient.connect(
       dbo.collection("transt").insertOne(casht, function (err, res) {
         if (err) throw err;
         console.log("1 document inserted");
-        db.close();
       });
 
       dbo.collection("journals").find({}).toArray(function (err, result) {
@@ -81,7 +80,9 @@ MongoClient.connect(
               banme: value5,
               pno: value6,
             }
-            abo.collection("journals").update(myorg, mynew, {
+            dbo.collection("journals").updateOne(myorg, {
+              $set: mynew
+            }, {
               upsert: true
             })
           }
