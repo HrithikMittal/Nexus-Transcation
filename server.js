@@ -49,41 +49,14 @@ MongoClient.connect(
           casht.date = req.body.date,
           casht.transactiontype = req.body.transactiontype,
           casht.amount = req.body.amount,
+          casht.transmode = req.body.transmode
 
-          var myobj = {
-            casht.pno,
-            casht.pno,
-            casht.date,
-            casht.transactiontype,
-            casht.amount
-          }
-
-        dbo.collection("transt").insertOne(myobj, function (err, res) {
+        dbo.collection("transt").insertOne(casht, function (err, res) {
           if (err) throw err;
           console.log("1 document inserted");
           db.close();
         });
       })
-      .get(function (req, res) {
-        Details.find(function (err, details) {
-          if (err) {
-            res.send(err);
-          }
-          res.json(details);
-        });
-      });
-
-    router.route('/cash/pno/:pno')
-      .get(function (req, res) {
-        Details.find({
-          pno: req.params.bname
-        }, function (err, detail) {
-          if (err) {
-            res.send(err);
-          }
-          res.json(detail.bname);
-        });
-      });
   });
 
 // Fire up server
