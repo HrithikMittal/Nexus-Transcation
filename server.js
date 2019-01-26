@@ -63,7 +63,7 @@ MongoClient.connect(
         if (err) throw err;
         console.log("1 document inserted");
       });
-
+      res.send("process done");
       dbo.collection("journals").find({}).toArray(function (err, result) {
         if (err) throw err;
         for (i = 0; i < result.length; i++) {
