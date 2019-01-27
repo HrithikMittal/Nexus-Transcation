@@ -77,36 +77,42 @@ MongoClient.connect(
           if (result[i].nameledger == casht.fromname) {
 
             var valuefl1 = result[i].nameledger;
-            var val1 = ledgera.gotoledger.toname;
-            var val2 = ledgera.gotoledger.toamount;
+            // ledgera.gotoledger.toname = val1;
+            // ledgera.gotoledger.toamount = val2;
 
             var myorg = {
               nameledger: valuefl1,
             };
+            // var mynew = {
+            //   val1: value2,
+            //   val2: value5,
+            // };
             var mynew = {
-              val1: value2,
-              val2: value5,
+              "gotoledger.toname": value2,
+              "gotoledger.tomoney": value5,
             };
             dbo.collection("ledger").updateOne(myorg, {
               $push: mynew
             }, {
               upsert: true
             });
+            console.log("Everything is cool!");
             flag = 1;
+            break;
           }
         }
+        if (flag == 0) {
+          console.log("Hello what is going on?");
+          ledgera.nameledger = value1;
+          ledgera.gotoledger.toname = value2;
+          ledgera.gotoledger.tomoney = value5;
+
+          dbo.collection("ledger").insertOne(ledgera, function (err, res) {
+            if (err) throw err;
+            console.log("1 document inserted");
+          });
+        }
       });
-
-      if (flag == 0) {
-        ledgera.nameledger = value1;
-        ledgera.gotoledger.toname = value2;
-        ledgera.gotoledger.tomoney = value5;
-
-        dbo.collection("ledger").insertOne(ledgera, function (err, res) {
-          if (err) throw err;
-          console.log("1 document inserted");
-        });
-      }
 
       /*
               // to get ledger        
