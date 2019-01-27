@@ -2,11 +2,10 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var LedgerSchema = new Schema({
-    name: String,
-    toname: String,
-
-    debitamount: String,
-    creditamount: String,
+    nameledger: String,
+    toamount: String,
+    getamount: String,
+    balance: String,
 });
 
 module.exports = mongoose.model('Ledger', LedgerSchema);
