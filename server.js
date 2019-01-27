@@ -3,6 +3,7 @@ var app = express();
 var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
 var Details = require("./app/models/cash");
+var Ledger = require("./app/models/ledger");
 var MongoClient = require("mongodb").MongoClient;
 
 // Configure app for bodyParser()
@@ -45,27 +46,30 @@ MongoClient.connect(
 
     router.route("/trans").post(function (req, res) {
       var casht = new Details();
-      (casht.bname = req.body.bname),
-      (casht.pno = req.body.pno),
-      (casht.date = req.body.date),
-      (casht.transactiontype = req.body.transactiontype),
-      (casht.amount = req.body.amount),
-      (casht.transmode = req.body.transmode);
+      casht.fromname = req.body.fronname;
+      casht.toname = req.body.toname;
+      casht.date = req.body.date;
+      casht.transmode = req.body.transmode;
+      casht.debitamount = req.body.debitamount;
+      casht.creditamount = req.body.creditamount;
 
-      var value1 = casht.transactiontype;
-      var value2 = casht.transmode;
+      var value1 = casht.fromname;
+      var value2 = casht.toname;
       var value3 = casht.date;
-      var value4 = casht.amount;
-      var value5 = casht.bname;
-      var value6 = casht.pno;
+      var value4 = casht.transmode;
+      var value5 = casht.debitamount;
+      var value6 = casht.creditamount;
 
-      dbo.collection("transt").insertOne(casht, function (err, res) {
+      dbo.collection("journals").insertOne(casht, function (err, res) {
         if (err) throw err;
         console.log("1 document inserted");
       });
-      res.send("process done");
+
+      res.send("Insertion done successfully in journals");
+
       dbo.collection("journals").find({}).toArray(function (err, result) {
         if (err) throw err;
+        var ledgera = new Ledger();
         for (i = 0; i < result.length; i++) {
           if (result[i].transactiontype == casht.transactiontype && result[i].transmode == casht.transmode) {
             var myorg = {

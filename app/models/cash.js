@@ -2,12 +2,12 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var DetailSchema = new Schema({
-  bname: String,
-  pno: String,
+  fromname: String,
+  toname: String,
   date: String,
-  transactiontype: String,
-  amount: String,
   transmode: String,
+  debitamount: String,
+  creditamount: String,
 });
 
 module.exports = mongoose.model('Details', DetailSchema);
