@@ -3,11 +3,16 @@ var Schema = mongoose.Schema;
 
 var LedgerSchema = new Schema({
     nameledger: String,
-    toname: String,
-    byname: String,
-    toamount: String,
-    getamount: String,
+    gotoledger: {
+        toname: String,
+        tomoney: String,
+    },
+    getfromledger: {
+        getname: String,
+        getmoney: String,
+    },
     balance: String,
+
 });
 
 module.exports = mongoose.model('Ledger', LedgerSchema);

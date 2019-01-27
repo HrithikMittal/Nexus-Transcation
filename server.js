@@ -71,30 +71,30 @@ MongoClient.connect(
         if (err) throw err;
         var ledgera = new Ledger();
 
+        // for to ledger
         for (i = 0; i < result.length; i++) {
           if (result[i].nameledger == casht.fromname) {
 
             var valuefl1 = result[i].nameledger;
+            var valuefl2 = casht.amount;
+            var valuefl3 = casht.
             var myorg = {
               nameledger: valuefl1
             }
-            // var mynew = {
-            //   transactiontype: value1,
-            //   transmode: value2,
-            //   date: value3,
-            //   amount: value4,
-            //   banme: value5,
-            //   pno: value6,
-            // }
-            // dbo.collection("journals").updateOne(myorg, {
-            //   $set: mynew
-            // }, {
-            //   upsert: true
-            // })
+            var mynew = {
+
+            }
+            dbo.collection("journals").updateOne(myorg, {
+              $push: mynew
+            }, {
+              upsert: true
+            })
           } else {
 
           }
         }
+
+        // to get ledger        
         for (i = 0; i < result.length; i++) {
           if (result[i].nameledger == casht.toname) {
 
