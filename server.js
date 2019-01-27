@@ -71,57 +71,70 @@ MongoClient.connect(
         if (err) throw err;
         var ledgera = new Ledger();
 
-        // for to ledger
+        // from the ledger
         for (i = 0; i < result.length; i++) {
           if (result[i].nameledger == casht.fromname) {
 
             var valuefl1 = result[i].nameledger;
             var valuefl2 = casht.amount;
-            var valuefl3 = casht.
-            var myorg = {
-              nameledger: valuefl1
-            }
-            var mynew = {
+            var valuefl3 = casht.toname;
+            var val1 = gotoledger.toname;
+            var val2 = gotoledger.toamount;
 
-            }
+            var myorg = {
+              nameledger: valuefl1,
+            };
+            var mynew = {
+              val1: value2,
+              val2: value5,
+            };
             dbo.collection("journals").updateOne(myorg, {
               $push: mynew
             }, {
               upsert: true
-            })
+            });
           } else {
+
+            ledgera.nameledger = value1;
+            ledgera.gotoledger.toname = value2;
+            ledgera.gotoledger.toamount = value5;
+
+            dbo.collection("ledger").insertOne(ledgera, function (err, res) {
+              if (err) throw err;
+              console.log("1 document inserted");
+            });
 
           }
         }
+        /*
+                // to get ledger        
+                for (i = 0; i < result.length; i++) {
+                  if (result[i].nameledger == casht.toname) {
 
-        // to get ledger        
-        for (i = 0; i < result.length; i++) {
-          if (result[i].nameledger == casht.toname) {
+                    var valuetl1 = result[i].nameledger;
+                    var valuetl2 = result[i].amount;
+                    var valuetl3 = ;
+                    var myorg = {
+                      nameledger: valuel1,
+                      transmode: value2
+                    }
+                    // var mynew = {
+                    //   transactiontype: value1,
+                    //   transmode: value2,
+                    //   date: value3,
+                    //   amount: value4,
+                    //   banme: value5,
+                    //   pno: value6,
+                    // }
+                    // dbo.collection("journals").updateOne(myorg, {
+                    //   $set: mynew
+                    // }, {
+                    //   upsert: true
+                    // })
+                  } else {
 
-            var valuetl1 = result[i].nameledger;
-            var valuetl2 = result[i].amount;
-            var valuetl3 = ;
-            var myorg = {
-              nameledger: valuel1,
-              transmode: value2
-            }
-            // var mynew = {
-            //   transactiontype: value1,
-            //   transmode: value2,
-            //   date: value3,
-            //   amount: value4,
-            //   banme: value5,
-            //   pno: value6,
-            // }
-            // dbo.collection("journals").updateOne(myorg, {
-            //   $set: mynew
-            // }, {
-            //   upsert: true
-            // })
-          } else {
-
-          }
-        }
+                  }
+                }*/
       });
     });
   }
