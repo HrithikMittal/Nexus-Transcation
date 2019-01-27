@@ -25,6 +25,7 @@ MongoClient.connect(
   url,
   (err, db) => {
     const dbo = db.db("trans");
+    const dbs = db.db("trans");
     //API Routes
     var router = express.Router();
 
@@ -118,6 +119,10 @@ MongoClient.connect(
           }
           step2 = 1;
         }
+      });
+
+      dbs.collection("ledger").find({}).toArray(function (err, result) {
+        if (err) throw err;
         // "by" from the ledger
         if (step1 == 1 && step2 == 1 && step3 == 0 && step4 == 0) {
           for (i = 0; i < result.length; i++) {
