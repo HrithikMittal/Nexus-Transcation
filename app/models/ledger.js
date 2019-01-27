@@ -4,8 +4,12 @@ var Schema = mongoose.Schema;
 var LedgerSchema = new Schema({
     nameledger: String,
     gotoledger: {
-        toname: String,
-        tomoney: String,
+        toname: {
+            type: "array"
+        },
+        tomoney: {
+            type: "array"
+        },
     },
     getfromledger: {
         getname: String,
