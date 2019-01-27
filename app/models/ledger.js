@@ -12,8 +12,12 @@ var LedgerSchema = new Schema({
         },
     },
     getfromledger: {
-        getname: String,
-        getmoney: String,
+        getname: {
+            type: "array"
+        },
+        getmoney: {
+            type: "array"
+        },
     },
     balance: String,
 

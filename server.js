@@ -55,6 +55,11 @@ MongoClient.connect(
       casht.creditamount = req.body.creditamount;
 
       flag = 0;
+      flagagain = 0;
+      step1 = 0;
+      step2 = 0;
+      step3 = 0;
+      step4 = 0;
       var value1 = casht.fromname;
       var value2 = casht.toname;
       var value3 = casht.date;
@@ -69,49 +74,87 @@ MongoClient.connect(
 
       res.send("Insertion done successfully in journals");
 
+
       dbo.collection("ledger").find({}).toArray(function (err, result) {
         if (err) throw err;
 
-        // from the ledger
-        for (i = 0; i < result.length; i++) {
-          if (result[i].nameledger == casht.fromname) {
+        if (step1 == 0 && step2 == 0 && step3 == 0 && step4 == 0) {
+          // "to" from the ledger
+          for (i = 0; i < result.length; i++) {
+            if (result[i].nameledger == casht.fromname) {
 
-            var valuefl1 = result[i].nameledger;
-            // ledgera.gotoledger.toname = val1;
-            // ledgera.gotoledger.toamount = val2;
-
-            var myorg = {
-              nameledger: valuefl1,
-            };
-            // var mynew = {
-            //   val1: value2,
-            //   val2: value5,
-            // };
-
-            var mynew = {
-              "gotoledger.toname": value2,
-              "gotoledger.tomoney": value5,
-            };
-            dbo.collection("ledger").updateOne(myorg, {
-              $push: mynew
-            }, {
-              upsert: true
-            });
-            console.log("Everything is cool!");
-            flag = 1;
-            break;
+              var valuefl1 = result[i].nameledger;
+              var myorg = {
+                nameledger: valuefl1,
+              };
+              var mynew = {
+                "gotoledger.toname": value2,
+                "gotoledger.tomoney": value5,
+              };
+              dbo.collection("ledger").updateOne(myorg, {
+                $push: mynew
+              }, {
+                upsert: true
+              });
+              console.log("Everything is cool!!!");
+              flag = 1;
+              break;
+            }
           }
+          step1 = 1;
         }
-        if (flag == 0) {
-          console.log("Hello what is going on?");
-          ledgera.nameledger = value1;
-          ledgera.gotoledger.toname = value2;
-          ledgera.gotoledger.tomoney = value5;
 
-          dbo.collection("ledger").insertOne(ledgera, function (err, res) {
-            if (err) throw err;
-            console.log("1 document inserted");
-          });
+        if (step1 == 1 && step2 == 0 && step3 == 0 && step4 == 0) {
+          if (flag == 0) {
+            console.log("Everything works fine....");
+            ledgera.nameledger = value1;
+            ledgera.gotoledger.toname = value2;
+            ledgera.gotoledger.tomoney = value5;
+
+            dbo.collection("ledger").insertOne(ledgera, function (err, res) {
+              if (err) throw err;
+              console.log("1 document inserted");
+            });
+          }
+          step2 = 1;
+        }
+        // "by" from the ledger
+        if (step1 == 1 && step2 == 1 && step3 == 0 && step4 == 0) {
+          for (i = 0; i < result.length; i++) {
+            if (result[i].nameledger == value2) {
+
+              var valuefl2 = result[i].nameledger;
+              var myorgagain = {
+                nameledger: valuefl2,
+              };
+              var mynewagain = {
+                "getfromledger.getname": value1,
+                "getfromledger.getmoney": value5,
+              };
+              dbo.collection("ledger").updateOne(myorgagain, {
+                $push: mynewagain
+              }, {
+                upsert: true
+              });
+              console.log("Everything is cool!!!");
+              flagagain = 1;
+              break;
+            }
+          }
+          step3 = 1;
+        }
+        if (step1 == 1 && step2 == 1 && step3 == 1 && step4 == 0) {
+          if (flagagain == 0) {
+            console.log("Everything works fines ... ");
+            ledgera.nameledger = value1;
+            ledgera.getfromledger.getname = value1;
+            ledgera.getfromledger.getmoney = value5;
+
+            dbo.collection("ledger").insertOne(ledgera, function (err, res) {
+              if (err) throw err;
+              console.log("1 document insert");
+            });
+          }
         }
       });
 
