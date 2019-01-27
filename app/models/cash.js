@@ -6,8 +6,7 @@ var DetailSchema = new Schema({
   toname: String,
   date: String,
   transmode: String,
-  debitamount: String,
-  creditamount: String,
+  amount: String,
 });
 
 module.exports = mongoose.model('Details', DetailSchema);

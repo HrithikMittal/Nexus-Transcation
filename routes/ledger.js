@@ -54,8 +54,7 @@ MongoClient.connect(
             casht.toname = req.body.toname;
             casht.date = req.body.date;
             casht.transmode = req.body.transmode;
-            casht.debitamount = req.body.debitamount;
-            casht.creditamount = req.body.creditamount;
+            casht.amount = req.body.amount;
 
             flag = 0;
             flagagain = 0;
@@ -63,8 +62,7 @@ MongoClient.connect(
             var value2 = casht.toname;
             var value3 = casht.date;
             var value4 = casht.transmode;
-            var value5 = casht.debitamount;
-            var value6 = casht.creditamount;
+            var value5 = casht.amount;
 
             dbo.collection("ledger").find({}).toArray(function (err, result) {
                 if (err) throw err;
