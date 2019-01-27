@@ -151,7 +151,7 @@ MongoClient.connect(
         if (step1 == 1 && step2 == 1 && step3 == 1 && step4 == 0) {
           if (flagagain == 0) {
             console.log("Everything works fines ... ");
-            ledgera.nameledger = value1;
+            ledgera.nameledger = value2;
             ledgera.getfromledger.getname = value1;
             ledgera.getfromledger.getmoney = value5;
 
