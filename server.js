@@ -67,28 +67,59 @@ MongoClient.connect(
 
       res.send("Insertion done successfully in journals");
 
-      dbo.collection("journals").find({}).toArray(function (err, result) {
+      dbo.collection("ledger").find({}).toArray(function (err, result) {
         if (err) throw err;
         var ledgera = new Ledger();
+
         for (i = 0; i < result.length; i++) {
-          if (result[i].transactiontype == casht.transactiontype && result[i].transmode == casht.transmode) {
+          if (result[i].nameledger == casht.fromname) {
+
+            var valuefl1 = result[i].nameledger;
             var myorg = {
-              transactiontype: value1,
+              nameledger: valuefl1
+            }
+            // var mynew = {
+            //   transactiontype: value1,
+            //   transmode: value2,
+            //   date: value3,
+            //   amount: value4,
+            //   banme: value5,
+            //   pno: value6,
+            // }
+            // dbo.collection("journals").updateOne(myorg, {
+            //   $set: mynew
+            // }, {
+            //   upsert: true
+            // })
+          } else {
+
+          }
+        }
+        for (i = 0; i < result.length; i++) {
+          if (result[i].nameledger == casht.toname) {
+
+            var valuetl1 = result[i].nameledger;
+            var valuetl2 = result[i].amount;
+            var valuetl3 = ;
+            var myorg = {
+              nameledger: valuel1,
               transmode: value2
             }
-            var mynew = {
-              transactiontype: value1,
-              transmode: value2,
-              date: value3,
-              amount: value4,
-              banme: value5,
-              pno: value6,
-            }
-            dbo.collection("journals").updateOne(myorg, {
-              $set: mynew
-            }, {
-              upsert: true
-            })
+            // var mynew = {
+            //   transactiontype: value1,
+            //   transmode: value2,
+            //   date: value3,
+            //   amount: value4,
+            //   banme: value5,
+            //   pno: value6,
+            // }
+            // dbo.collection("journals").updateOne(myorg, {
+            //   $set: mynew
+            // }, {
+            //   upsert: true
+            // })
+          } else {
+
           }
         }
       });
