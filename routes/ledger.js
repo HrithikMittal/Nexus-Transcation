@@ -75,6 +75,7 @@ MongoClient.connect(
 
                 for (i = 0; i < result.length; i++) {
                     if (result[i].nameledger == value2) {
+
                         for (j = 0; j < result.length; j++) {
                             // for (j = 0; j < result[i].gotoledger.tomoney.length; j++) {
                             //     valueto = valueto + parseInt(result[i].gotoledger.tomoney[j]);
@@ -126,10 +127,21 @@ MongoClient.connect(
                     ledgera.nameledger = value2;
                     ledgera.getfromledger.getname = value1;
                     ledgera.getfromledger.getmoney = value5;
+                    ledgera.debitamount = value5;
 
                     dbo.collection("ledger").insertOne(ledgera, function (err, res) {
                         if (err) throw err;
                         console.log("1 document insert");
+                    });
+
+                    var valuefl = value1;
+                    var myorga = {
+                        nameledger: valuefl,
+                    };
+                    dbo.collection("ledger").updateOne(myorga, {
+                        $set: {
+                            "debitamount": setamount
+                        }
                     });
                 }
             });

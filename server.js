@@ -51,7 +51,8 @@ MongoClient.connect(
       casht.toname = req.body.toname;
       casht.date = req.body.date;
       casht.transmode = req.body.transmode;
-      casht.amount = req.body.amount;
+      casht.creditamount = req.body.creditamount;
+      casht.debitamount = req.body.debitamount;
 
       flag = 0;
       flagagain = 0;
@@ -63,7 +64,8 @@ MongoClient.connect(
       var value2 = casht.toname;
       var value3 = casht.date;
       var value4 = casht.transmode;
-      var value5 = casht.amount;
+      var value5 = casht.creditamount;
+      var value6 = casht.debitamount;
 
       dbo.collection("journals").insertOne(casht, function (err, res) {
         if (err) throw err;
@@ -75,46 +77,77 @@ MongoClient.connect(
 
       dbo.collection("ledger").find({}).toArray(function (err, result) {
         if (err) throw err;
+        var valueto = 0;
 
-        if (step1 == 0 && step2 == 0 && step3 == 0 && step4 == 0) {
-          // "to" from the ledger
-          for (i = 0; i < result.length; i++) {
-            if (result[i].nameledger == casht.fromname) {
+        // "to" from the ledger
+        for (i = 0; i < result.length; i++) {
+          if (result[i].nameledger == casht.fromname) {
 
-              var valuefl1 = result[i].nameledger;
-              var myorg = {
-                nameledger: valuefl1,
-              };
-              var mynew = {
-                "gotoledger.toname": value2,
-                "gotoledger.tomoney": value5,
-              };
-              dbo.collection("ledger").updateOne(myorg, {
-                $push: mynew
-              }, {
-                upsert: true
-              });
-              console.log("Everything is cool!!!");
-              flag = 1;
-              break;
+            for (j = 0; j < result.length; j++) {
+              for (k = 0; k < result[j].gotoledger.tomoney.length; k++) {
+                valueto = valueto + parseInt(result[i].gotoledger.tomoney[k]);
+              }
+              // for (k = 0; k < result[j].getfromledger.getmoney.length; k++) {
+              //   valueget = valueget + parseInt(result[i].getfromledger.getmoney[k]);
+              // }
             }
+            console.log(valueto);
+            if (isNaN(result[i].creditamount) == true) {
+              result[i].creditamount = valueto;
+              console.log("I am NaN");
+            } else {
+              result[i].creditamount = parseInt(result[i].creditamount) + valueto;
+              console.log("I am not NaN");
+            }
+            setamount = result[i].creditamount;
+            console.log(setamount);
+
+            var valuefl1 = result[i].nameledger;
+            var myorg = {
+              nameledger: valuefl1,
+            };
+            var mynew = {
+              "gotoledger.toname": value2,
+              "gotoledger.tomoney": value5,
+            };
+            dbo.collection("ledger").updateOne(myorg, {
+              $push: mynew
+            }, {
+              upsert: true
+            });
+            dbo.collection("ledger").updateOne(myorg, {
+              $set: {
+                "creditamount": setamount
+              }
+            });
+            console.log("Everything is cool!!!");
+            flag = 1;
+            break;
           }
-          step1 = 1;
         }
 
-        if (step1 == 1 && step2 == 0 && step3 == 0 && step4 == 0) {
-          if (flag == 0) {
-            console.log("Everything works fine....");
-            ledgera.nameledger = value1;
-            ledgera.gotoledger.toname = value2;
-            ledgera.gotoledger.tomoney = value5;
 
-            dbo.collection("ledger").insertOne(ledgera, function (err, res) {
-              if (err) throw err;
-              console.log("1 document inserted");
-            });
-          }
-          step2 = 1;
+
+        if (flag == 0) {
+          console.log("Everything works fine....");
+          ledgera.nameledger = value1;
+          ledgera.gotoledger.toname = value2;
+          ledgera.gotoledger.tomoney = value5;
+          ledgera.creditamount = value5;
+          dbo.collection("ledger").insertOne(ledgera, function (err, res) {
+            if (err) throw err;
+            console.log("1 document inserted");
+          });
+          var valuefl2 = value1;
+          var myorga = {
+            nameledger: valuefl2,
+          };
+          dbo.collection("ledger").updateOne(myorga, {
+            $set: {
+              "creditamount": setamount
+            }
+          });
+
         }
       });
     });
