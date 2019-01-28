@@ -20,7 +20,8 @@ var LedgerSchema = new Schema({
         },
     },
     balance: String,
-
+    debitamount: String,
+    creditamount: String,
 });
 
 module.exports = mongoose.model('Ledger', LedgerSchema);

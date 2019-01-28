@@ -54,23 +54,48 @@ MongoClient.connect(
             casht.toname = req.body.toname;
             casht.date = req.body.date;
             casht.transmode = req.body.transmode;
-            casht.amount = req.body.amount;
+            casht.creditamount = req.body.creditamount;
+            casht.debitamount = req.body.debitamount;
 
             flag = 0;
             flagagain = 0;
+            valueto = 0;
+            valueget = 0;
             var value1 = casht.fromname;
             var value2 = casht.toname;
             var value3 = casht.date;
             var value4 = casht.transmode;
-            var value5 = casht.amount;
+            var value5 = casht.creditamount;
+            var value6 = casht.debitamount;
+            var setamount = 0;
 
             dbo.collection("ledger").find({}).toArray(function (err, result) {
                 if (err) throw err;
                 // "by" from the ledger
+
                 for (i = 0; i < result.length; i++) {
                     if (result[i].nameledger == value2) {
-
+                        for (j = 0; j < result.length; j++) {
+                            // for (j = 0; j < result[i].gotoledger.tomoney.length; j++) {
+                            //     valueto = valueto + parseInt(result[i].gotoledger.tomoney[j]);
+                            // }
+                            for (k = 0; k < result[j].getfromledger.getmoney.length; k++) {
+                                valueget = valueget + parseInt(result[i].getfromledger.getmoney[k]);
+                            }
+                        }
+                        console.log(valueget);
+                        if (isNaN(result[i].debitamount) == true) {
+                            result[i].debitamount = valueget;
+                            console.log("I am NaN");
+                        } else {
+                            result[i].debitamount = parseInt(result[i].debitamount) + valueget;
+                            console.log("I am not NaN");
+                        }
+                        setamount = result[i].debitamount;
+                        console.log(setamount);
                         var valuefl2 = result[i].nameledger;
+
+
                         var myorgagain = {
                             nameledger: valuefl2,
                         };
@@ -83,12 +108,19 @@ MongoClient.connect(
                         }, {
                             upsert: true
                         });
+
+                        dbo.collection("ledger").updateOne(myorgagain, {
+                            $set: {
+                                "debitamount": setamount
+                            }
+                        });
                         console.log("Everything is cool!!!");
                         flagagain = 1;
                         break;
                     }
-
                 }
+
+
                 if (flagagain == 0) {
                     console.log("Everything works fines ... ");
                     ledgera.nameledger = value2;
@@ -99,7 +131,6 @@ MongoClient.connect(
                         if (err) throw err;
                         console.log("1 document insert");
                     });
-
                 }
             });
 
