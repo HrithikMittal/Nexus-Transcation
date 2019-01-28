@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var TrialSchema = new Schema({
+    collectionname: String,
     name: {
         type: "array"
     },

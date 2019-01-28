@@ -49,6 +49,7 @@ MongoClient.connect(
         // code for ledger
         router.route("/trans").post(function (req, res) {
 
+
             var casht = new Details();
             var ledgera = new Ledger();
             var trail = new Trails();
@@ -57,30 +58,78 @@ MongoClient.connect(
             casht.toname = req.body.toname;
             casht.date = req.body.date;
             casht.transmode = req.body.transmode;
-            casht.amount = req.body.amount;
+            casht.creditamount = req.body.creditamount;
+            casht.debitamount = req.body.debitamount;
 
             valueto = 0;
             valueget = 0;
+            var flag1 = 0;
             var value1 = casht.fromname;
             var value2 = casht.toname;
             var value3 = casht.date;
             var value4 = casht.transmode;
-            var value5 = casht.amount;
+            var value5 = casht.creditamount;
+            var value6 = casht.debitamount;
+            var camount = 0;
+            var damount = 0;
+            if (value5 == 0) {
+                amount = 0;
+            } else {
+                amount = value6;
+            }
 
-            dbo.collection("ledger").find({}).toArray(function (err, result) {
+            dbo.collection("trail").find({}).toArray(function (err, result) {
                 if (err) throw err;
                 for (i = 0; i < result.length; i++) {
-                    if (result[i].nameledger == value1) {
-                        for (j = 0; j < result[i].gotoledger.tomoney.length; j++) {
-                            valueto = valueto + parseInt(result[i].gotoledger.tomoney[j]);
-                        }
-                        for (j = 0; j < result[i].getfromledger.getmoney.length; j++) {
-                            valueget = valueget + parseInt(result[i].getfromledger.getmoney[j]);
+                    for (j = 0; j < result[i].name.length; j++) {
+                        if (result[i].name[j] == value1) {
+                            flag1 = 1;
+                            console.log(result[i].name[j]);
+                            console.log(j);
+                            if (typeof (result[i].credit[j]) == 'undefined') {
+                                damount = parseInt(result[i].debit[j]);
+                            }
+                            if (typeof (result[i].debit[j]) == 'undefined') {
+                                camount = parseInt(result[i].credit[j]);
+                            }
+                            console.log(result[i].debit[j]);
+
+
+                            if (value5 == 0) {
+                                damount = damount + value6;
+                            } else {
+                                camount = camount + value5;
+                            }
+                            console.log(damount);
+                            console.log(camount);
+                            break;
                         }
                     }
                 }
+
+
+                if (flag1 == 0) {
+                    console.log(flag1);
+                    var myorg = {
+                        collectionname: "trialbalance",
+                    };
+
+                    var mynew = {
+                        name: value1,
+                        debit: amount,
+                        credit: 0,
+                    };
+
+                    dbo.collection("trail").updateOne(myorg, {
+                        $push: mynew
+                    }, {
+                        upsert: true
+                    });
+                }
             });
+            res.send("All set");
         });
+
     });
 // Fire up server
 app.listen(port);
