@@ -171,88 +171,87 @@ MongoClient.connect(
                             // });
 
                         }
-                        break;
                     }
 
-
-                    // when new trail name comes
-                    if (flag1 == 0) {
-                        if (value5int == 0) {
-                            console.log("I am ");
-                            var mynew = {
-                                name: value1,
-                                credit: amount,
-                                debit: 0,
-                            };
-                            console.log(flag1);
-                            var myorg = {
-                                collectionname: "trialbalance",
-                            };
-
-                            dbo.collection("trail").updateOne(myorg, {
-                                $push: mynew
-                            }, {
-                                upsert: true
-                            });
-                        } else {
-                            console.log("I am here");
-                            var mynewb = {
-                                name: value1,
-                                credit: 0,
-                                debit: amount,
-                            };
-                            console.log(flag1);
-                            var myorgb = {
-                                collectionname: "trialbalance",
-                            };
-
-                            dbo.collection("trail").updateOne(myorgb, {
-                                $push: mynewb
-                            }, {
-                                upsert: true
-                            });
-                        }
-
-                    }
-                    if (flag2 == 0) {
-                        if (value6int == 0) {
-                            console.log("I am ");
-                            var mynewaa = {
-                                name: value2,
-                                credit: amount,
-                                debit: 0,
-                            };
-                            console.log(flag1);
-                            var myorgaa = {
-                                collectionname: "trialbalance",
-                            };
-
-                            dbo.collection("trail").updateOne(myorgaa, {
-                                $push: mynewaa
-                            }, {
-                                upsert: true
-                            });
-                        } else {
-                            console.log("I am here");
-                            var mynewaab = {
-                                name: value2,
-                                credit: 0,
-                                debit: amount,
-                            };
-                            console.log(flag1);
-                            var myorgaab = {
-                                collectionname: "trialbalance",
-                            };
-
-                            dbo.collection("trail").updateOne(myorgaab, {
-                                $push: mynewaab
-                            }, {
-                                upsert: true
-                            });
-                        }
-
-                    }
                 }
+                // when new trail name comes
+                if (flag1 == 0) {
+                    if (value5int == 0) {
+                        console.log("I am ");
+                        var mynew = {
+                            name: value1,
+                            credit: amount,
+                            debit: 0,
+                        };
+                        console.log(flag1);
+                        var myorg = {
+                            collectionname: "trialbalance",
+                        };
+
+                        dbo.collection("trail").updateOne(myorg, {
+                            $push: mynew
+                        }, {
+                            upsert: true
+                        });
+                    } else {
+                        console.log("I am here");
+                        var mynewb = {
+                            name: value1,
+                            credit: 0,
+                            debit: amount,
+                        };
+                        console.log(flag1);
+                        var myorgb = {
+                            collectionname: "trialbalance",
+                        };
+
+                        dbo.collection("trail").updateOne(myorgb, {
+                            $push: mynewb
+                        }, {
+                            upsert: true
+                        });
+                    }
+
+                }
+                if (flag2 == 0) {
+                    if (value6int == 0) {
+                        console.log("I am ");
+                        var mynewaa = {
+                            name: value2,
+                            credit: amount,
+                            debit: 0,
+                        };
+                        console.log(flag1);
+                        var myorgaa = {
+                            collectionname: "trialbalance",
+                        };
+
+                        dbo.collection("trail").updateOne(myorgaa, {
+                            $push: mynewaa
+                        }, {
+                            upsert: true
+                        });
+                    } else {
+                        console.log("I am he");
+                        var mynewaab = {
+                            name: value2,
+                            credit: 0,
+                            debit: amount,
+                        };
+                        console.log(flag1);
+                        var myorgaab = {
+                            collectionname: "trialbalance",
+                        };
+
+                        dbo.collection("trail").updateOne(myorgaab, {
+                            $push: mynewaab
+                        }, {
+                            upsert: true
+                        });
+                    }
+
+                }
+
             });
             res.send("All set");
         });
