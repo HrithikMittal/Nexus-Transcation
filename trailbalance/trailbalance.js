@@ -72,6 +72,9 @@ MongoClient.connect(
             var value6 = casht.debitamount;
             var camount = 0;
             var damount = 0;
+            var value6int = parseInt(value6);
+            var value5int = parseInt(value5);
+
             if (value5 == 0) {
                 amount = 0;
             } else {
@@ -84,24 +87,49 @@ MongoClient.connect(
                     for (j = 0; j < result[i].name.length; j++) {
                         if (result[i].name[j] == value1) {
                             flag1 = 1;
-                            console.log(result[i].name[j]);
-                            console.log(j);
                             if (typeof (result[i].credit[j]) == 'undefined') {
                                 damount = parseInt(result[i].debit[j]);
                             }
                             if (typeof (result[i].debit[j]) == 'undefined') {
                                 camount = parseInt(result[i].credit[j]);
                             }
-                            console.log(result[i].debit[j]);
-
 
                             if (value5 == 0) {
-                                damount = damount + value6;
+                                damount = damount + value6int;
                             } else {
-                                camount = camount + value5;
+                                camount = camount + value5int;
                             }
+
+                            // if (typeof (result[i].credit[j]) == 'undefined') {
+                            //     var mynewa = {
+                            //         "debit.j": damount,
+                            //     };
+                            // }
+                            // if (typeof (result[i].debit[j]) == 'undefined') {
+                            //     var mynewa = {
+                            //         "credit.j": camount,
+                            //     };
+                            // }
+                            var mynewa = {
+                                "debit.j": damount,
+                            };
                             console.log(damount);
                             console.log(camount);
+                            console.log(mynewa);
+                            // update exisiting value in the database
+                            var myorga = {
+                                collectionname: "trialbalance",
+                            };
+                            // dbo.collection("trail").updateOne(myorga, {
+                            //     "$set": {
+                            //         "debit.j.content": damount
+                            //     }
+                            // });
+
+                            dbo.collection("trail").updateOne(myorga, {
+                                "$push": mynewa,
+                            });
+
                             break;
                         }
                     }
