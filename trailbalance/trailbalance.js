@@ -64,6 +64,7 @@ MongoClient.connect(
             valueto = 0;
             valueget = 0;
             var flag1 = 0;
+            var flag2 = 0;
             var value1 = casht.fromname;
             var value2 = casht.toname;
             var value3 = casht.date;
@@ -87,93 +88,170 @@ MongoClient.connect(
                     for (j = 0; j < result[i].name.length; j++) {
                         if (result[i].name[j] == value1) {
                             flag1 = 1;
-                            if (typeof (result[i].credit[j]) == 'undefined') {
-                                damount = parseInt(result[i].debit[j]);
-                            }
-                            if (typeof (result[i].debit[j]) == 'undefined') {
-                                camount = parseInt(result[i].credit[j]);
-                            }
 
-                            if (value5 == 0) {
-                                damount = damount + value6int;
-                            } else {
-                                camount = camount + value5int;
-                            }
-
-                            // if (typeof (result[i].credit[j]) == 'undefined') {
-                            //     var mynewa = {
-                            //         "debit.j": damount,
-                            //     };
-                            // }
-                            // if (typeof (result[i].debit[j]) == 'undefined') {
-                            //     var mynewa = {
-                            //         "credit.j": camount,
-                            //     };
-                            // }
-                            console.log(j);
-                            var mynewa = {
-                                "debit.j": damount,
-                            };
-                            console.log(damount);
-                            console.log(camount);
-                            console.log(mynewa);
-                            // update exisiting value in the database
                             var myorga = {
                                 collectionname: "trialbalance",
                             };
+
+                            if (result[i].credit[j] == 0) {
+                                damount = parseInt(result[i].debit[j]);
+                                console.log(damount);
+                                damount = damount + value6int;
+                                console.log(damount);
+                                var mynewa = {
+                                    "debit": damount,
+                                };
+                                dbo.collection("trail").updateOne(myorga, {
+                                    "$push": mynewa,
+                                });
+                            }
+                            if (result[i].debit[j] == 0) {
+                                camount = parseInt(result[i].credit[j]);
+                                console.log(camount);
+                                camount = camount + value5int;
+                                var mynewc = {
+                                    "credit": camount,
+                                };
+                                dbo.collection("trail").updateOne(myorga, {
+                                    "$push": mynewc,
+                                });
+                            }
+
+
+
+                            // update exisiting value in the database
+
                             // dbo.collection("trail").updateOne(myorga, {
                             //     "$set": {
                             //         "debit.j.content": damount
                             //     }
                             // });
 
-                            dbo.collection("trail").updateOne(myorga, {
-                                "$set": mynewa,
-                            });
-
-                            break;
                         }
+
+                        if (result[i].name[j] == value2) {
+                            flag2 = 1;
+
+                            var myorgab = {
+                                collectionname: "trialbalance",
+                            };
+
+                            if (result[i].credit[j] == 0) {
+                                damount = parseInt(result[i].debit[j]);
+                                console.log(damount);
+                                damount = damount + value6int;
+                                console.log(damount);
+                                var mynewab = {
+                                    "debit": damount,
+                                };
+                                dbo.collection("trail").updateOne(myorgab, {
+                                    "$push": mynewab,
+                                });
+                            }
+                            if (result[i].debit[j] == 0) {
+                                camount = parseInt(result[i].credit[j]);
+                                console.log(camount);
+                                camount = camount + value5int;
+                                var mynewac = {
+                                    "credit": camount,
+                                };
+                                dbo.collection("trail").updateOne(myorgab, {
+                                    "$push": mynewac,
+                                });
+                            }
+
+
+
+                            // update exisiting value in the database
+
+                            // dbo.collection("trail").updateOne(myorga, {
+                            //     "$set": {
+                            //         "debit.j.content": damount
+                            //     }
+                            // });
+
+                        }
+                        break;
                     }
-                }
 
-                // when new trail name comes
-                if (flag1 == 0) {
-                    if (value5int == 0) {
-                        console.log("I am ");
-                        var mynew = {
-                            name: value1,
-                            debit: amount,
-                            credit: 0,
-                        };
-                        console.log(flag1);
-                        var myorg = {
-                            collectionname: "trialbalance",
-                        };
 
-                        dbo.collection("trail").updateOne(myorg, {
-                            $push: mynew
-                        }, {
-                            upsert: true
-                        });
-                    } else {
-                        console.log("I am here");
-                        var mynewb = {
-                            name: value1,
-                            debit: 0,
-                            credit: amount,
-                        };
-                        console.log(flag1);
-                        var myorgb = {
-                            collectionname: "trialbalance",
-                        };
+                    // when new trail name comes
+                    if (flag1 == 0) {
+                        if (value5int == 0) {
+                            console.log("I am ");
+                            var mynew = {
+                                name: value1,
+                                credit: amount,
+                                debit: 0,
+                            };
+                            console.log(flag1);
+                            var myorg = {
+                                collectionname: "trialbalance",
+                            };
 
-                        dbo.collection("trail").updateOne(myorgb, {
-                            $push: mynewb
-                        }, {
-                            upsert: true
-                        });
+                            dbo.collection("trail").updateOne(myorg, {
+                                $push: mynew
+                            }, {
+                                upsert: true
+                            });
+                        } else {
+                            console.log("I am here");
+                            var mynewb = {
+                                name: value1,
+                                credit: 0,
+                                debit: amount,
+                            };
+                            console.log(flag1);
+                            var myorgb = {
+                                collectionname: "trialbalance",
+                            };
+
+                            dbo.collection("trail").updateOne(myorgb, {
+                                $push: mynewb
+                            }, {
+                                upsert: true
+                            });
+                        }
+
                     }
+                    if (flag2 == 0) {
+                        if (value6int == 0) {
+                            console.log("I am ");
+                            var mynewaa = {
+                                name: value2,
+                                credit: amount,
+                                debit: 0,
+                            };
+                            console.log(flag1);
+                            var myorgaa = {
+                                collectionname: "trialbalance",
+                            };
 
+                            dbo.collection("trail").updateOne(myorgaa, {
+                                $push: mynewaa
+                            }, {
+                                upsert: true
+                            });
+                        } else {
+                            console.log("I am here");
+                            var mynewaab = {
+                                name: value2,
+                                credit: 0,
+                                debit: amount,
+                            };
+                            console.log(flag1);
+                            var myorgaab = {
+                                collectionname: "trialbalance",
+                            };
+
+                            dbo.collection("trail").updateOne(myorgaab, {
+                                $push: mynewaab
+                            }, {
+                                upsert: true
+                            });
+                        }
+
+                    }
                 }
             });
             res.send("All set");
