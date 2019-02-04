@@ -132,7 +132,7 @@ MongoClient.connect(
                             tempd[j] = value6int + tempd[j];
                             console.log(tempd);
 
-                            mynewa = {
+                            mynewabx = {
                                 collectionname: "trailbalance",
                                 name: tempn,
                                 debit: tempd,
@@ -140,7 +140,7 @@ MongoClient.connect(
                             };
 
                             dbo.collection("trail").updateOne(myorgb, {
-                                "$set": mynewa,
+                                "$set": mynewabx,
                             });
 
                         }
