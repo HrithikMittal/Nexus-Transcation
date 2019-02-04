@@ -32,19 +32,19 @@ MongoClient.connect(
     app.use("/api", router);
 
     //MIDDLE WARE-
-    router.use(function(req, res, next) {
+    router.use(function (req, res, next) {
       console.log("FYI...There is some processing currently going down");
       next();
     });
 
     // test route
-    router.get("/", function(req, res) {
+    router.get("/", function (req, res) {
       res.json({
         message: "Welcome !"
       });
     });
 
-    router.route("/trans").post(function(req, res) {
+    router.route("/trans").post(function (req, res) {
       var casht = new Details();
       var ledgera = new Ledger();
       casht.fromname = req.body.fromname;
@@ -53,7 +53,7 @@ MongoClient.connect(
       casht.transmode = req.body.transmode;
       casht.creditamount = req.body.creditamount;
       casht.debitamount = req.body.debitamount;
-
+      casht.amount = req.body.creditamount;
       flag = 0;
       flagagain = 0;
       step1 = 0;
@@ -63,11 +63,11 @@ MongoClient.connect(
       var value1 = casht.fromname;
       var value2 = casht.toname;
       var value3 = casht.date;
-      var value4 = casht.transm + ode;
+      var value4 = casht.transmode;
       var value5 = casht.creditamount;
       var value6 = casht.debitamount;
 
-      dbo.collection("journals").insertOne(casht, function(err, res) {
+      dbo.collection("journals").insertOne(casht, function (err, res) {
         if (err) throw err;
         console.log("1 document inserted");
       });
@@ -77,7 +77,7 @@ MongoClient.connect(
       dbo
         .collection("ledger")
         .find({})
-        .toArray(function(err, result) {
+        .toArray(function (err, result) {
           if (err) throw err;
           var valueto = 0;
 
@@ -113,11 +113,9 @@ MongoClient.connect(
                 "gotoledger.tomoney": value5
               };
               dbo.collection("ledger").updateOne(
-                myorg,
-                {
+                myorg, {
                   $push: mynew
-                },
-                {
+                }, {
                   upsert: true
                 }
               );
@@ -138,7 +136,7 @@ MongoClient.connect(
             ledgera.gotoledger.toname = value2;
             ledgera.gotoledger.tomoney = value5;
             ledgera.creditamount = value5;
-            dbo.collection("ledger").insertOne(ledgera, function(err, res) {
+            dbo.collection("ledger").insertOne(ledgera, function (err, res) {
               if (err) throw err;
               console.log("1 document inserted");
             });

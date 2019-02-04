@@ -197,8 +197,8 @@ MongoClient.connect(
                         console.log("I am here");
                         var mynewb = {
                             name: value1,
-                            credit: 0,
-                            debit: amount,
+                            credit: amount,
+                            debit: 0,
                         };
                         console.log(flag1);
                         var myorgb = {
@@ -218,8 +218,8 @@ MongoClient.connect(
                         console.log("I am ");
                         var mynewaa = {
                             name: value2,
-                            credit: amount,
-                            debit: 0,
+                            credit: 0,
+                            debit: amount,
                         };
                         console.log(flag1);
                         var myorgaa = {
