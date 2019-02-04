@@ -151,25 +151,6 @@ MongoClient.connect(
 
 
                 // when new trail name comes
-                if (flag1 == 0) {
-                    console.log("I am here");
-                    var mynewab = {
-                        name: value1,
-                        credit: amount,
-                        debit: 0,
-                    };
-                    console.log(flag1);
-                    var myorgab = {
-                        collectionname: "trialbalance",
-                    };
-
-                    dbo.collection("trail").updateOne(myorgab, {
-                        $push: mynewab
-                    }, {
-                        upsert: true
-                    });
-
-                }
                 if (flag2 == 0) {
                     console.log("I am he");
                     var mynewaab = {
@@ -177,7 +158,7 @@ MongoClient.connect(
                         credit: 0,
                         debit: amount,
                     };
-                    console.log(flag1);
+                    console.log(flag2);
                     var myorgaab = {
                         collectionname: "trialbalance",
                     };
@@ -189,6 +170,27 @@ MongoClient.connect(
                     });
 
                 }
+
+                if (flag1 == 0) {
+                    console.log("I am here");
+                    var mynewx = {
+                        name: value1,
+                        credit: amount,
+                        debit: 0,
+                    };
+                    console.log(flag1);
+                    var myorgx = {
+                        collectionname: "trialbalance",
+                    };
+
+                    dbo.collection("trail").updateOne(myorgx, {
+                        $push: mynewx
+                    }, {
+                        upsert: true
+                    });
+
+                }
+
 
             });
             res.send("All set");
