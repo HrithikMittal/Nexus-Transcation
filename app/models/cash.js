@@ -6,6 +6,8 @@ var DetailSchema = new Schema({
   toname: String,
   date: String,
   transmode: String,
+  creditamount: String,
+  debitamount: String,
   amount: String,
 });
 

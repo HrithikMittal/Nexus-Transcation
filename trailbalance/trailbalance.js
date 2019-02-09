@@ -150,8 +150,9 @@ MongoClient.connect(
 
 
 
+
                 // when new trail name comes
-                if (flag2 == 0) {
+                if (flag2 == 0 && flag1 != 0) {
                     console.log("I am he");
                     var mynewaab = {
                         name: value2,
@@ -169,11 +170,9 @@ MongoClient.connect(
                         upsert: true
                     });
 
-                }
-
-                if (flag1 == 0) {
+                } else if (flag1 == 0 && flag2 != 0) {
                     console.log("I am here");
-                    var mynewx = {
+                    var mynewsx = {
                         name: value1,
                         credit: amount,
                         debit: 0,
@@ -185,6 +184,42 @@ MongoClient.connect(
 
                     dbo.collection("trail").updateOne(myorgx, {
                         $push: mynewx
+                    }, {
+                        upsert: true
+                    });
+
+                } else if (flag2 == 0 && flag1 == 0) {
+
+
+                    console.log("I am he");
+                    var mynewaaby = {
+                        name: value2,
+                        credit: 0,
+                        debit: amount,
+                    };
+                    console.log(flag2);
+                    var myorgaaby = {
+                        collectionname: "trialbalance",
+                    };
+
+                    dbo.collection("trail").updateOne(myorgaaby, {
+                        $push: mynewaaby
+                    }, {
+                        upsert: true
+                    });
+                    console.log("I am here");
+                    var mynewxy = {
+                        name: value1,
+                        credit: amount,
+                        debit: 0,
+                    };
+                    console.log(flag1);
+                    var myorgxy = {
+                        collectionname: "trialbalance",
+                    };
+
+                    dbo.collection("trail").updateOne(myorgxy, {
+                        $push: mynewxy
                     }, {
                         upsert: true
                     });
