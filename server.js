@@ -66,7 +66,8 @@ MongoClient.connect(
       var value4 = casht.transmode;
       var value5 = casht.creditamount;
       var value6 = casht.debitamount;
-
+      var setamountintial = parseInt(value5);
+      // insertion in the database of jounal
       dbo.collection("journals").insertOne(casht, function (err, res) {
         if (err) throw err;
         console.log("1 document inserted");
@@ -74,6 +75,7 @@ MongoClient.connect(
 
       res.send("Insertion done successfully in journals");
 
+      // insertion in the database of ledger
       dbo
         .collection("ledger")
         .find({})
@@ -88,9 +90,6 @@ MongoClient.connect(
                 for (k = 0; k < result[j].gotoledger.tomoney.length; k++) {
                   valueto = valueto + parseInt(result[i].gotoledger.tomoney[k]);
                 }
-                // for (k = 0; k < result[j].getfromledger.getmoney.length; k++) {
-                //   valueget = valueget + parseInt(result[i].getfromledger.getmoney[k]);
-                // }
               }
               console.log(valueto);
               if (isNaN(result[i].creditamount) == true) {
@@ -146,7 +145,7 @@ MongoClient.connect(
             };
             dbo.collection("ledger").updateOne(myorga, {
               $set: {
-                creditamount: setamount
+                creditamount: setamountintial
               }
             });
           }
