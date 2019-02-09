@@ -59,7 +59,6 @@ MongoClient.connect(
 
             flag = 0;
             flagagain = 0;
-            valueto = 0;
             valueget = 0;
             var value1 = casht.fromname;
             var value2 = casht.toname;
@@ -67,6 +66,7 @@ MongoClient.connect(
             var value4 = casht.transmode;
             var value5 = casht.creditamount;
             var value6 = casht.debitamount;
+            var setamountintial = parseInt(value5);
             var setamount = 0;
 
             dbo.collection("ledger").find({}).toArray(function (err, result) {
@@ -76,23 +76,20 @@ MongoClient.connect(
                 for (i = 0; i < result.length; i++) {
                     if (result[i].nameledger == value2) {
 
-                        for (j = 0; j < result.length; j++) {
-                            // for (j = 0; j < result[i].gotoledger.tomoney.length; j++) {
-                            //     valueto = valueto + parseInt(result[i].gotoledger.tomoney[j]);
-                            // }
-                            for (k = 0; k < result[j].getfromledger.getmoney.length; k++) {
-                                valueget = valueget + parseInt(result[i].getfromledger.getmoney[k]);
-                            }
+                        for (k = 0; k < result[i].getfromledger.getmoney.length; k++) {
+                            valueget = valueget + parseInt(result[i].getfromledger.getmoney[k]);
+
                         }
                         console.log(valueget);
                         if (isNaN(result[i].debitamount) == true) {
-                            result[i].debitamount = valueget;
+                            // result[i].debitamount = valueget;
+                            setamount = setamountintial;
                             console.log("I am NaN");
                         } else {
-                            result[i].debitamount = parseInt(result[i].debitamount) + valueget;
+                            // result[i].debitamount = parseInt(result[i].debitamount) + valueget;
+                            setamount = valueget + setamountintial;
                             console.log("I am not NaN");
                         }
-                        setamount = result[i].debitamount;
                         console.log(setamount);
                         var valuefl2 = result[i].nameledger;
 
