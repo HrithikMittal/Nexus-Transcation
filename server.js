@@ -86,21 +86,23 @@ MongoClient.connect(
           // "to" from the ledger
           for (i = 0; i < result.length; i++) {
             if (result[i].nameledger == casht.fromname) {
-              for (j = 0; j < result.length; j++) {
-                for (k = 0; k < result[j].gotoledger.tomoney.length; k++) {
-                  valueto = valueto + parseInt(result[i].gotoledger.tomoney[k]);
-                }
+              for (k = 0; k < result[i].gotoledger.tomoney.length; k++) {
+                valueto = valueto + parseInt(result[i].gotoledger.tomoney[k]);
               }
+
+
               console.log(valueto);
               if (isNaN(result[i].creditamount) == true) {
-                result[i].creditamount = valueto;
+                // result[i].creditamount = valueto;
+                setamount = setamountintial;
                 console.log("I am NaN");
               } else {
-                result[i].creditamount =
-                  parseInt(result[i].creditamount) + valueto;
+                // result[i].creditamount =
+                //   parseInt(result[i].creditamount) + valueto;
+                setamount = setamountintial + parseInt(result[i].creditamount);
                 console.log("I am not NaN");
               }
-              setamount = result[i].creditamount;
+
               console.log(setamount);
 
               var valuefl1 = result[i].nameledger;
@@ -129,6 +131,7 @@ MongoClient.connect(
             }
           }
 
+          // if ledger do not present previsouly
           if (flag == 0) {
             console.log("Everything works fine....");
             ledgera.nameledger = value1;
